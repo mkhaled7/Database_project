@@ -24,9 +24,19 @@ if($values = oci_fetch_array ($cursor)){
 
   // found the client
   $clientid = $values[0];
-  $usertype = $values[2];
+  if($values[5]==1){
+    $usertype = "Admin";
+    if($values[6]==1){
+      $usertype = "StudentAdmin";
+    }
+  
+  } 
+  else if($values[6]==1){
+    $usertype = "Student";
+  }
+  
 
-  print_r($values);
+  //print_r($values);
 
   // create a new session for this client
   $sessionid = md5(uniqid(rand()));
@@ -46,13 +56,13 @@ if($values = oci_fetch_array ($cursor)){
     display_oracle_error_message($cursor);
     die("Failed to create a new session");
   }
-  else if ($usertype == '0'){
+  else if ($usertype == 'Admin'){
     header("Location:admin_welcome.php?sessionid=$sessionid");
   }
-  else if ($usertype == '1'){
+  else if ($usertype == 'Student'){
     header("Location:student_welcome.php?sessionid=$sessionid");
   }
-  else if ($usertype == '2'){
+  else if ($usertype == 'StudentAdmin'){
     header("Location:sadmin_welcome.php?sessionid=$sessionid");
   }
   else {
