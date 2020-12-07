@@ -4,8 +4,6 @@ include "utility_functions.php";
 $sessionid =$_GET["sessionid"];
 verify_session($sessionid);
 
-
-// connection OK - delete the session.
 $sql = "delete from myclientsession where sessionid = '$sessionid'";
 
 $result_array = execute_sql_in_oracle ($sql);

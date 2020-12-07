@@ -24,19 +24,15 @@ if($values = oci_fetch_array ($cursor)){
 
   // found the client
   $clientid = $values[0];
-  if($values[5]==1){
+  if($values[2]==1){
     $usertype = "Admin";
-    if($values[6]==1){
+    if($values[3]==1){
       $usertype = "StudentAdmin";
     }
-  
   } 
-  else if($values[6]==1){
+  else if($values[3]==1){
     $usertype = "Student";
   }
-  
-
-  //print_r($values);
 
   // create a new session for this client
   $sessionid = md5(uniqid(rand()));
@@ -51,7 +47,11 @@ if($values = oci_fetch_array ($cursor)){
   $result_array = execute_sql_in_oracle ($sql);
   $result = $result_array["flag"];
   $cursor = $result_array["cursor"];
-
+  setcookie('gq047id' ,  $clientid	, time() + (86400 * 1), "/");	
+  setcookie('gq047type' ,  $usertype	, time() + (86400 * 1), "/");	
+  setcookie('gq047session' ,  $sessionid	, time() + (86400 * 1), "/");	
+  setcookie('gq047loggedin' ,  true	, time() + (86400 * 1), "/");	
+  // setcookie('name of cookie' ,  $value, time() + (86400 * 1[number of days you want to store cookie]), "/"[domain coverage]);	
   if ($result == false){
     display_oracle_error_message($cursor);
     die("Failed to create a new session");
